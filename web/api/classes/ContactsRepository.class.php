@@ -25,8 +25,8 @@ class ContactsRepository {
     $result = array();
     foreach($stmt->fetchAll() AS $id) {
       $user = UserRepository::get($id['id']);
-      unset($user['password_hashed']);
-      $result[] = $user;
+      if ($user != null)
+        $result[] = $user;
     }
     return $result;
   }
