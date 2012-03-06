@@ -2,6 +2,8 @@
 <head>
 	<title>Wobble Alternative Design</title>
 
+	<script type="text/javascript" src="js/ext/jquery.min.js"></script>
+
 	<style type="text/css">
 
 		/*
@@ -80,20 +82,85 @@
 		}
 
 		.tabed_view .content_views{
-			margin: 0px;
-			margin-right: auto;
+			margin: 1px auto 0px 0px;
 			padding: 0px;
 			max-width: 12em;
 		}
 
-		.tabed_view .content_views div {
+		.tabed_view .content_views > div {
 			background-color: white;
 			margin-right: auto;
 
 			border-color: #C7C7C7;
 			border-style: solid;
-			border-width: 1px;
+			border-width: 1px;;
 		}
+
+		.tabed_view .content_views ul {
+			list-style-type: none;
+			margin: 0px 0px 0px 0px;
+			padding: 0em 0px 0px 0px
+
+		}
+
+		.tabed_view .content_views li {
+			padding: 0.3em 0.5em 0.3em 0.5em;
+			border-top-style: solid;
+			border-top-width: 1px;
+			border-color: #C7C7C7;
+		}
+
+		.tabed_view .content_views .new_wobble {
+			background-color: #2F69E9;
+			color: white;
+		}
+
+		.tabed_view .content_views .topic {
+			clear: both;
+		}
+
+		.tabed_view .content_views .topic > .preview {
+			float: left;
+			clear: left;
+		}
+
+		.tabed_view .content_views .topic > .metadata {
+			float: right
+			font-family: sans-serif;
+			font-size: 0.6em;
+			border:none;
+		}
+
+		.tabed_view .content_views .topic > .metadata > div {
+			float: right;
+			border:none;
+		}
+
+		.tabed_view .content_views .topic > .metadata .unread_count {
+			background-color: #98CF35;
+			padding: 0.1em 0.5em;
+			border-radius: 1em;
+		}
+
+		.tabed_view .content_views .topic > .metadata .time {
+			color: gray;
+			float: right;
+			text-align: right;
+		}
+
+		.tabed_view .content_views .hidden {
+			visibility: hidden;
+		}
+
+		.clear {
+			clear: both;
+		}
+
+		.anti_collabs {
+			clear: both;
+			visibility: hidden;
+		}
+
 
 	</style>
 
@@ -119,16 +186,44 @@
 			</div>
 
 			<div class="content_views">
-				<div class="visible">
+				<div>
 					<ul>
-						<li>Tobpic 01</li>
-						<li>Tobpic 02</li>
-						<li>Tobpic 03</li>
-						<li>Tobpic 04</li>
+						<li class="new_wobble">new topic</li>
+						<li class="topic">
+							<span class="preview">Topic A</span>
+							<div class="metadata">
+								<div class="read_status">
+									<span class="unread_count">2</span> of 10<br>
+									<span class="time">12:32</span>
+								</div>
+								<div class="last_edit"></div>
+							</div>
+						</li>
+						<li class="topic">
+							<span class="preview">Topic B</span>
+							<div class="metadata">
+								<div class="read_status">
+									<span class="unread_count">2</span> of 10<br>
+									<span class="time">12:32</span>
+								</div>
+								<div class="last_edit"></div>
+							</div>
+						</li>
+						<li class="topic">
+							<span class="preview">Topic C</span>
+							<div class="metadata">
+								<div class="read_status">
+									<span class="unread_count">2</span> of 10<br>
+									<span class="time">12:32</span>
+								</div>
+								<div class="last_edit"></div>
+							</div>
+						</li>
+						<div class="anti_collabs"></div>
 					</ul>
 				</div>
 
-				<div>
+				<div class="hidden">
 					<ul>
 						<li>archived: Tobpic A</li>
 						<li>archived: Tobpic B</li>
