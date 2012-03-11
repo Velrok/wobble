@@ -1,0 +1,57 @@
+/*+++++++ Blue Text +++++++*/
+.app_name 
+{
+	color: #2A78F3;
+}
+
+/*+++++++ Blue on White +++++++*/
+#topic_view .topic .header,
+#topic_view .users .creator,
+.tabs .inbox,
+.content_view .new_wobble
+{
+	background-color: #2A78F3;
+	color: white;
+}
+
+/*+++++++ Green Background +++++++*/
+.content_view .topic > .metadata .unread_count 
+{
+	background-color: #98CF35;
+}
+
+/*+++++++ Borders +++++++*/
+.content_view li,
+#topic_view .users .participants > img,
+#topic_view .users .creator > img
+{
+	border: 1px solid #AAA;
+}
+
+
+/*+++++++ Black Borders +++++++*/
+#topics_list .tabs > span
+{
+	border-color: black;
+}
+
+/*+++++++ Light Shadow +++++++*/
+{
+	box-shadow: 0px 0px 4px 1px #AAA;
+}
+
+
+/*+++++++ Inner Shadows +++++++*/
+#topic_view .topic .body
+{
+	box-shadow: inset 0px 0px 0.5em 0px #AAA;
+}
+
+/*+++++++ Shadows +++++++*/
+#page,
+#top_menu li,
+/*#topics_list,*/
+#topic_view
+{
+	box-shadow: 0px 0px 10px #AAA;
+}

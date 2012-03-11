@@ -1,0 +1,31 @@
+/*+++++++++++ Default Font +++++++++++*/
+body
+{
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+}
+
+/*+++++++++++ Header +++++++++++*/
+#header .username 
+{
+	font-family: "Trebuchet MS", sans-serif;
+	font-size: 1em;
+}
+
+#header .app_name 
+{
+	font-family: Impact, sans-serif;
+	font-size: 3em;
+}
+
+/*+++++++++++ List Line +++++++++++*/
+.content_view .topic .preview .title 
+{
+	font-weight: bold;
+}
+
+/*+++++++++++ List Line Metha Data +++++++++++*/
+.content_view .topic > .metadata
+{
+	font-size: 0.8em;
+}

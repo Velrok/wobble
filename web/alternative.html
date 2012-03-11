@@ -4,235 +4,123 @@
 
 	<script type="text/javascript" src="js/ext/jquery.min.js"></script>
 
-	<style type="text/css">
+	<!-- the reset makes sure, that the default values are all the same across all browsers -->
+	<link rel="stylesheet" type="text/css" href="alternative_css/html5reset.css">
 
-		/*
-		Some colors to use:
-		 - THE blue: #2A78F3;
-		 - light gray: #F2F2F2;
-		 - dark gray: #C7C7C7;
-		*/
+	<!-- <link rel="stylesheet" type="text/css" href="alternative_css/alternative.css"> -->
 
+	<link rel="stylesheet" type="text/css" href="alternative_css/positions_and_sizes.css">
+	<link rel="stylesheet" type="text/css" href="alternative_css/fonts.css">
+	<link rel="stylesheet" type="text/css" href="alternative_css/colors.css">
 
-		div {
-			border-style: solid;
-			border-width: 1px;
-			border-color: #F2F2F2;
-		}
-
-		body {
-			background-color: #F2F2F2;
-			padding: 0px 10px 10px 10px;
-		}
-
-		#top_menu {
-			text-align: right;
-			float: right;
-		}
-
-		#top_menu span {
-			padding: 0.5em;
-			background-color: #CECECE;
-			box-shadow: 0px 5px 5px 0px #AAA;
-		}
-
-		#header {
-			margin: 0px;
-			padding: 0px;
-			float: left;
-		}
-
-		#header span {
-			color: #2A78F3;
-		}
-
-		#header h1 {
-			font-family: Mono, "MS Trebuchet", sans-serif;
-			color: #2A78F3;
-			margin: 0px;
-			padding: 0px;
-
-		}
-
-		#widgets {
-			clear: both;
-			margin-top: 400px;
-		}
-
-		.tabed_view .tabs {
-			padding: 0px;
-			margin: 20px 0px 0px 0px;
-		}
-
-		.tabed_view .tabs span {
-			margin: 0px 0.5em 0px 0px;
-			padding: 0.2em 1em 0.2em 1em;
-			background-color: white;
-			color: #2A78F3;
-
-			border-color: #C7C7C7;
-			border-style: solid;
-			border-width: 1px;
-			border-bottom-style: none;
-		}
-
-		.tabed_view .tabs .active {
-			background-color: #2A78F3;
-			color: white;
-		}
-
-		.tabed_view .content_views{
-			margin: 1px auto 0px 0px;
-			padding: 0px;
-			max-width: 12em;
-		}
-
-		.tabed_view .content_views > div {
-			background-color: white;
-			margin-right: auto;
-
-			border-color: #C7C7C7;
-			border-style: solid;
-			border-width: 1px;;
-		}
-
-		.tabed_view .content_views ul {
-			list-style-type: none;
-			margin: 0px 0px 0px 0px;
-			padding: 0em 0px 0px 0px
-
-		}
-
-		.tabed_view .content_views li {
-			padding: 0.3em 0.5em 0.3em 0.5em;
-			border-top-style: solid;
-			border-top-width: 1px;
-			border-color: #C7C7C7;
-		}
-
-		.tabed_view .content_views .new_wobble {
-			background-color: #2F69E9;
-			color: white;
-		}
-
-		.tabed_view .content_views .topic {
-			clear: both;
-		}
-
-		.tabed_view .content_views .topic > .preview {
-			float: left;
-			clear: left;
-		}
-
-		.tabed_view .content_views .topic > .metadata {
-			float: right
-			font-family: sans-serif;
-			font-size: 0.6em;
-			border:none;
-		}
-
-		.tabed_view .content_views .topic > .metadata > div {
-			float: right;
-			border:none;
-		}
-
-		.tabed_view .content_views .topic > .metadata .unread_count {
-			background-color: #98CF35;
-			padding: 0.1em 0.5em;
-			border-radius: 1em;
-		}
-
-		.tabed_view .content_views .topic > .metadata .time {
-			color: gray;
-			float: right;
-			text-align: right;
-		}
-
-		.tabed_view .content_views .hidden {
-			visibility: hidden;
-		}
-
-		.clear {
-			clear: both;
-		}
-
-		.anti_collabs {
-			clear: both;
-			visibility: hidden;
-		}
-
-
-	</style>
+	<!-- customasation (skinns) . For example one for boys and one for girls ;) -->
+	<!-- <link rel="stylesheet" type="text/css" href="alternative_css/cool_boys.css"> -->
+	<!-- <link rel="stylesheet" type="text/css" href="alternative_css/hip_gilrs.css"> -->
 
 </head>
 <body>
 
-	<div id="top_menu">
-		<span>Contacts</span>
-		<span>[userpic][username]</span>
-		<span>Logout</span>
-	</div>
+	<div id="page">
 
 	<div id="header">
-		<span>[username]'s</span> </br>
-		<h1>wobble</h1>
+		<img id="app_icon" src="images/favicon.png">
+
+		<ul id="top_menu">
+			<li class="contacts"><div>Contacts</div></li>
+			<li class="user_profile"><img src="images/avatare/maik.jpeg"><div>Maik</div></li>
+			<li class="logout"><div>Logout</div></li>
+		</ul>
 	</div>
 
 	<div id="widgets">
-		<div class="tabed_view">
-			<div class="tabs">
-				<span class="active">inbox</span>
-				<span>archive</span>
-			</div>
+		<div id="topics_list">
+			<ul class="tabs">
+				<li class="tab inbox active">inbox</li>
+				<li class="tab archive">archive</li>
+			</ul>
 
 			<div class="content_views">
-				<div>
-					<ul>
-						<li class="new_wobble">new topic</li>
-						<li class="topic">
-							<span class="preview">Topic A</span>
-							<div class="metadata">
-								<div class="read_status">
-									<span class="unread_count">2</span> of 10<br>
-									<span class="time">12:32</span>
-								</div>
-								<div class="last_edit"></div>
+				<ul class="content_view">
+					<li class="new_wobble">new topic</li>
+					
+					<li class="topic">
+						<div class="metadata">
+							<div class="read_status">
+								<span class="unread_count">2</span> of 10<br>
+								<span class="time">12:32</span>
 							</div>
-						</li>
-						<li class="topic">
-							<span class="preview">Topic B</span>
-							<div class="metadata">
-								<div class="read_status">
-									<span class="unread_count">2</span> of 10<br>
-									<span class="time">12:32</span>
-								</div>
-								<div class="last_edit"></div>
-							</div>
-						</li>
-						<li class="topic">
-							<span class="preview">Topic C</span>
-							<div class="metadata">
-								<div class="read_status">
-									<span class="unread_count">2</span> of 10<br>
-									<span class="time">12:32</span>
-								</div>
-								<div class="last_edit"></div>
-							</div>
-						</li>
-						<div class="anti_collabs"></div>
-					</ul>
-				</div>
+							<div class="last_edit"></div>
+						</div>
+						<img class="creator" src="images/avatare/waldemar.png">
+						<div class="preview"><span class="title">Allgemeine Info-Wave für Alle</span></div>
+					</li>
 
-				<div class="hidden">
-					<ul>
-						<li>archived: Tobpic A</li>
-						<li>archived: Tobpic B</li>
-						<li>archived: Tobpic C</li>
-						<li>archived: Tobpic D</li>
-					</ul>
-				</div>
+					<li class="topic">
+						<div class="metadata">
+							<div class="read_status">
+								<span class="unread_count">5</span> of 23<br>
+								<span class="time">12:32</span>
+							</div>
+							<div class="last_edit"></div>
+						</div>
+						<img class="creator" src="images/avatare/waldemar.png">
+						<div class="preview"><span class="title">Allgemeine Info-Wave für Alle</span></div>
+					</li>
+
+					<li class="topic">
+						<div class="metadata">
+							<div class="read_status">
+								<span class="unread_count">30</span> of 43<br>
+								<span class="time">12:32</span>
+							</div>
+							<div class="last_edit"></div>
+						</div>
+						<img class="creator" src="images/avatare/waldemar.png">
+						<div class="preview"><span class="title">Allgemeine Info-Wave für Alle</span></div>
+					</li>
+				</ul>
 			</div>
 		</div>
+
+		<div id="topic_view">
+			<div class="topic">
+				<div class="header"><div>Topic A</div></div>
+				<div class="body">
+					<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. </p>
+
+					<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+				</div>
+			</div>
+
+			<div class="users">
+				<div class="creator">
+					<img src="images/avatare/waldemar.png">
+				</div>
+				<div class="participants">
+					<input id="add_participant_button" type="button" value="+"/>
+					<img class="online" src="images/avatare/maik.jpeg">
+					<img src="images/avatare/dani.jpeg">
+					<img src="images/avatare/stephan.jpeg">
+					<img src="images/avatare/maik.jpeg">
+					<img src="images/avatare/dani.jpeg">
+					<img src="images/avatare/stephan.jpeg">
+					<img src="images/avatare/maik.jpeg">
+					<img src="images/avatare/dani.jpeg">
+					<img src="images/avatare/stephan.jpeg">
+					<img src="images/avatare/maik.jpeg">
+					<img src="images/avatare/dani.jpeg">
+					<img src="images/avatare/stephan.jpeg">
+					<img src="images/avatare/maik.jpeg">
+					<img src="images/avatare/dani.jpeg">
+					<img src="images/avatare/stephan.jpeg">
+				</div>
+			</div>
+			<div class="anti_collabs"></div>
+		</div>
+		<div class="anti_collabs"></div>
+	</div>
+
+	<div class="anti_collabs"></div>
 	</div>
 
 

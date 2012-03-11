@@ -1,0 +1,34 @@
+/** light gray background coloring **/
+body {
+	background-color: #F2F2F2;
+}
+
+/** dark gray background coloring **/
+#top_menu span {
+	background-color: #CECECE;
+}
+
+/** blue color **/
+#header span, #header h1, .tabed_view .tabs span {
+	color: #2A78F3;	
+}
+
+/** blue background / white font **/
+.tabed_view .tabs .active, .tabed_view .content_views .new_wobble,
+.topic_view .topic .header, .creator {
+	background-color: #2A78F3;
+	color: white;	
+}
+
+/** white background / black font **/
+.topic_view .topic, .topic_view .users .participants {
+	background-color: white;
+	color: black;
+}
+
+/** borders coloring **/
+.topic_view .topic, .topic_view .users {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #C7C7C7;
+}

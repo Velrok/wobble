@@ -1,0 +1,191 @@
+/** other stuff **/
+body {
+	padding: 0px 10px 10px 10px;
+}
+
+#top_menu {
+	text-align: right;
+	float: right;
+}
+
+#top_menu span {
+	padding: 0.5em;
+	box-shadow: 0px 5px 5px 0px #AAA;
+}
+
+#header {
+	margin: 0px;
+	padding: 0px;
+	float: left;
+}
+
+#header h1 {
+	margin: 0px;
+	padding: 0px;
+
+}
+
+#widgets {
+	clear: both;
+	margin-top: 400px;
+}
+
+.tabed_view {
+	float: left;
+}
+
+.tabed_view .tabs {
+	padding: 0px;
+	margin: 20px 0px 0px 0px;
+}
+
+.tabed_view .tabs span {
+	margin: 0px 0.5em 0px 0px;
+	padding: 0.2em 1em 0.2em 1em;
+	background-color: white;
+	color: #2A78F3;
+
+	border-color: #C7C7C7;
+	border-style: solid;
+	border-width: 1px;
+	border-bottom-style: none;
+}
+
+.tabed_view .tabs .active {
+	color: white;
+}
+
+.tabed_view .content_views{
+	margin: 1px auto 0px 0px;
+	padding: 0px;
+	width: 20em;
+	//max-width: 25em;
+	//min-width: 12em;
+}
+
+.tabed_view .content_views > div {
+	background-color: white;
+	margin-right: auto;
+
+	border-color: #C7C7C7;
+	border-style: solid;
+	border-width: 1px;;
+}
+
+.tabed_view .content_views ul {
+	list-style-type: none;
+	margin: 0px 0px 0px 0px;
+	padding: 0em 0px 0px 0px
+
+}
+
+.tabed_view .content_views li {
+	padding: 0.3em 0.5em 0.3em 0.5em;
+	border-top-style: solid;
+	border-top-width: 1px;
+	border-color: #C7C7C7;
+}
+
+.tabed_view .content_views .new_wobble {
+	background-color: #2F69E9;
+	color: white;
+}
+
+.tabed_view .content_views .topic {
+	clear: both;
+}
+
+.tabed_view .content_views .topic > .preview {
+	float: left;
+	clear: left;
+}
+
+.tabed_view .content_views .topic > .metadata {
+	float: right;
+	font-size: 0.6em;
+	border:none;
+}
+
+.tabed_view .content_views .topic > .metadata > div {
+	float: right;
+	border:none;
+}
+
+.tabed_view .content_views .topic > .metadata .unread_count {
+	background-color: #98CF35;
+	padding: 0.1em 0.5em;
+	border-radius: 1em;
+}
+
+.tabed_view .content_views .topic > .metadata .time {
+	color: gray;
+	float: right;
+	text-align: right;
+}
+
+.tabed_view .content_views .hidden {
+	visibility: hidden;
+}
+
+.clear {
+	clear: both;
+}
+
+.anti_collabs {
+	clear: both;
+	visibility: hidden;
+}
+
+
+/* 	topic view  */
+.topic_view {
+	float: left;
+}
+
+.topic_view .topic {
+	float: left;
+	width: 22em;
+	margin: 0px 0px 30px 20px;
+	//box-shadow: 0px 0px 5px 0px #AAA;
+}
+
+.topic_view .topic, .topic_view .users {
+	margin-top: 15px;
+}
+
+
+.topic_view .topic .header {
+	padding: 0em 1em;
+	font-size: 2em;
+	vertical-align-font
+	vertical-align: middle;
+}
+
+.topic_view .topic .header, .topic_view .users .creator{
+	height: 64px;
+	padding: 1px;
+}
+
+.topic_view .topic .body {
+	padding: 0em 1em;
+}
+
+.topic_view .users {
+	float: left;
+	width: 34px;
+}
+
+/** spacing in the users colume **/
+.topic_view .users img, #add_participant_button {
+	margin: 0px 2px 2px 2px;
+}
+
+#add_participant_button {
+	margin-top: 2px;
+	height: 3333pt;
+	width: 32px;
+}
+
+
+
+

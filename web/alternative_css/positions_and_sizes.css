@@ -1,0 +1,183 @@
+body {
+	height: 100% !important;
+	overflow: hidden;
+}
+
+#page {
+	min-width:700px;
+	max-width:1024px;
+	margin: 0px auto;
+	height: 770px;
+	padding: 0px 10px;
+}
+
+/*+++++++++++ Fixing Stuff +++++++++++*/
+.anti_collabs {
+	clear: both;
+	visibility: hidden;
+}
+
+/*+++++++++++ Header +++++++++++*/
+#header {
+	float: left;
+	height: 50px;
+	width: 100%;
+}
+
+#app_icon {
+	height: 80%;
+	float: left;
+}
+
+/*+++++++++++ Top Menu +++++++++++*/
+#top_menu {
+	float:right;
+	min-width:10em;
+	list-style-type: none;
+	height: 32px;
+}
+
+#top_menu li {
+	float: left;
+	margin: -1px 5px;
+	position: relative;
+	width:7em;
+	position: relative;
+	height: 100%;
+}
+
+#top_menu li img
+{
+	float: left;
+}
+
+#top_menu li div
+{
+	margin: 9px 1.5em;
+}
+
+
+/*+++++++++++ Widgets +++++++++++*/
+#widgets {
+	clear: both;
+	height:710px
+}
+
+#widgets > div {
+	height: 100%; /*all widgets use the full height*/
+	float:left; /*all float to the left*/
+	overflow: scroll;
+	margin-right: 20px;
+}
+
+
+/*+++++++++++ Topics List +++++++++++*/
+#topics_list {
+	
+}
+
+/*+++++++++++ Tabs +++++++++++*/
+#topics_list .tab {
+	margin-right:0.5em;
+	padding: 0.5em 1em;
+	border-width: 1px;
+	border-style: solid;
+	float: left;
+}
+
+#topics_list .tabs .active {
+	border-bottom-style: none;
+}
+
+
+/*+++++++++++ Topics List Line +++++++++++*/
+.content_view {
+	height: 100%;
+	margin-top: -30px;
+	clear: both;
+	list-style-type: none;
+}
+
+.content_view ul {
+	list-style-type: none;
+}
+
+.content_view li {
+	border-width: 1px;
+	border-bottom-style: solid;
+	clear: right;
+	min-height: 36px;
+	padding:2px;
+}
+
+.content_view .topic .creator {
+	float: left;
+	margin: 2px;
+}
+
+/*+++++++++++ Topics List Line Metadata +++++++++++*/
+.content_view .topic > .metadata {
+	float: right;
+}
+
+.content_view .topic > .metadata .unread_count {
+	padding: 0.1em 0.5em;
+	border-radius: 1em;
+}
+
+.content_view .topic > .metadata .time {
+	float: right;
+	text-align: right;
+}
+
+
+/*+++++++++++ Topic View +++++++++++*/
+#topic_view {
+	width: 380px;
+}
+
+#topic_view .topic {
+	float: left;
+	width: 340px;
+}
+
+#topic_view .topic .body {
+	padding: 1em;
+	height: 100%;
+}
+
+#topic_view .users {
+	float: right;
+	width:40px;
+}
+
+/*center userpix*/
+#topic_view .users .participants > img,
+#topic_view .users .creator > img,
+#add_participant_button 
+{
+	float: right;
+	margin: 3px 3px 0px 0px;
+}
+
+#add_participant_button {
+	width: 32px;
+}
+
+/* topic headerer */
+#topic_view .topic .header div {
+	font-size: 2em;
+	padding: 5px;
+}
+
+#topic_view .topic .header,
+#topic_view .users .creator {
+	height: 41px;
+}
+
+
+
+
+
+
+
