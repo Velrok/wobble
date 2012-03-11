@@ -42,7 +42,7 @@ function topics_list($params) {
   $result = $stmt->fetchAll();
 
   foreach($result AS $i => $topic) {
-    $result[$i]['users'] = TopicRepository::getReaders($topic['id'], 3);
+    $result[$i]['users'] = TopicRepository::getReaders($topic['id'], 1);
     $result[$i]['post_count_total'] = intval($result[$i]['post_count_total']);
     $result[$i]['max_last_touch'] = intval($result[$i]['max_last_touch']);
 
@@ -51,7 +51,8 @@ function topics_list($params) {
     $result[$i]['post_count_unread'] = $result[$i]['post_count_total'] - intval($result[$i]['post_count_read']) + intval($result[$i]['topic_messages']);
     unset($result[$i]['post_count_read']);    
 
-    $result[$i]['abstract'] = strip_tags(substr($result[$i]['abstract'], 0, 100));
+    $abstract = TopicListService::createAbstract($result[$i]['abstract'], 50);
+    $result[$i]['abstract'] = "<b>{$abstract['headline']}</b> - {$abstract['text']}";
     $result[$i]['archived'] = $show_archived;
   }
 

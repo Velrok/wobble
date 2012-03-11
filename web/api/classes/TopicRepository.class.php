@@ -20,6 +20,15 @@ class TopicRepository {
     }
     return $data;
   }
+
+  public static function isReader($topic_id, $user_id) {
+    $pdo = ctx_getpdo();
+    $stmt = $pdo->prepare('SELECT COUNT(*) cnt FROM topic_readers r WHERE r.user_id = ? AND r.topic_id = ?');
+    $stmt->execute(array($user_id, $topic_id));
+    $result = $stmt->fetchAll();
+    return $result[0]['cnt'] > 0;
+  }
+
   /**
    * Creates a new topic with an initial empty post belongign to the given user.
    * This user is also the only reader in the created topic.
@@ -35,6 +44,69 @@ class TopicRepository {
 
     TopicRepository::addReader($topic_id, $user_id);
     TopicRepository::createPost($topic_id, '1', $user_id);
+  }
+
+  /**
+   * Get topic.
+   */
+  function getTopic($topic_id, $user_id) {
+    $pdo = ctx_getpdo();
+    
+    $stmt = $pdo->prepare('SELECT p.post_id id, p.content, p.revision_no revision_no,
+        p.parent_post_id parent, p.created_at created_at, p.last_touch timestamp, p.deleted deleted,
+        p.intended_post intended_post,
+        coalesce((select 0 from post_users_read
+              where topic_id = p.topic_id AND post_id = p.post_id AND user_id = ?), 1) unread
+       FROM posts p
+      WHERE p.topic_id = ?
+      ORDER BY created_at');
+    $stmt->execute(array($user_id, $topic_id));
+    $posts = $stmt->fetchAll();
+    
+    $created_at = null;
+    $stmt = $pdo->prepare('SELECT e.user_id id FROM post_editors e WHERE topic_id = ? AND post_id = ?');
+    foreach($posts AS $i => $post) {
+      if ($post['id'] == '1') {
+          $created_at = intval($post['created_at']);
+      }
+      unset($post['created_at']); # Currently not of interest for public api
+    
+      # Integer formatting for JSON-RPC result
+      $posts[$i]['timestamp'] = intval($posts[$i]['timestamp']);
+      $posts[$i]['revision_no'] = intval($posts[$i]['revision_no']);
+      $posts[$i]['deleted'] = intval($posts[$i]['deleted']);
+      $posts[$i]['unread'] = intval($posts[$i]['unread']);
+      $posts[$i]['intended_post'] = intval($posts[$i]['intended_post']);
+    
+      $posts[$i]['locked'] = TopicRepository::getPostLockStatus($topic_id, $posts[$i]['id']);
+      if ($posts[$i]['locked']['user_id'] == $user_id) {
+        $posts[$i]['locked'] = NULL;
+      }
+    
+      # Subobject
+      $posts[$i]['users'] = array();
+      $stmt->execute(array($topic_id, $post['id']));
+      foreach($stmt->fetchAll() AS $post_user) {
+        $posts[$i]['users'][] = intval($post_user['id']);
+      }
+    }
+    
+    $readers = TopicRepository::getReaders($topic_id);
+    $writers = TopicRepository::getWriters($topic_id);
+    $messages = TopicMessagesRepository::listMessages($topic_id, $user_id);
+    
+    // Archived?
+    $archived = UserArchivedTopicRepository::isArchivedTopic($user_id, $topic_id);
+    
+    return array (
+      'id' => $topic_id,
+      'readers' => $readers,
+      'messages' => $messages,
+      'writers' => $writers,
+      'posts' => $posts,
+      'archived' => $archived,
+      'created_at' => $created_at
+    );
   }
 
   /**
@@ -70,8 +142,8 @@ class TopicRepository {
   }
   function setPostReadStatus($user_id, $topic_id, $post_id, $read_status) {
     $pdo = ctx_getpdo();
-    #var_dump($read_status);
-    if ( $read_status == 1) { # if read, create entry
+
+    if ($read_status == 1) { # if read, create entry
       $sql = 'REPLACE post_users_read (topic_id, post_id, user_id) VALUES (?,?,?)';
     } else {
       $sql = 'DELETE FROM post_users_read WHERE topic_id = ? AND post_id = ? AND user_id = ?';
@@ -104,9 +176,28 @@ class TopicRepository {
     }
   }
 
+  public static function updatePost($topic_id, $post_id, $rev, $content, $user_id) {
+    $pdo = ctx_getpdo();
+
+    $pdo->prepare('UPDATE posts SET content = ?, revision_no = revision_no + 1, last_touch = unix_timestamp() WHERE post_id = ? AND topic_id = ? AND revision_no = ?')
+        ->execute(array($content, $post_id, $topic_id, $rev));
+    $pdo->prepare('REPLACE post_editors (topic_id, post_id, user_id) VALUES (?,?,?)')
+        ->execute(array($topic_id, $post_id, $user_id));
+  }
+
+  public static function deletePost($topic_id, $post_id) {
+    $pdo = ctx_getpdo();
+
+    $stmt = $pdo->prepare('DELETE FROM post_editors WHERE topic_id = ? AND post_id = ?');
+    $stmt->execute(array($topic_id, $post_id));
+
+    $pdo->prepare('UPDATE posts SET deleted = 1, content = NULL WHERE topic_id = ? AND post_id = ?')->execute(array($topic_id, $post_id));
+
+    $pdo->prepare('DELETE FROM post_users_read WHERE topic_id = ? AND post_id = ?')->execute(array($topic_id, $post_id));
+  }
 
   # Traverses upwards and deletes all posts, if no child exist
-  function deletePostsIfNoChilds($topic_id, $post_id) {
+  public static function deletePostsIfNoChilds($topic_id, $post_id) {
     if($post_id === '1') {
       return;
     }
@@ -119,7 +210,7 @@ class TopicRepository {
     $stmt->execute(array($topic_id, $post_id));
     $post = $stmt->fetchAll();
     
-    if ( $post[0]['deleted'] !== '1') { # Abort is given post is not deleted
+    if ($post[0]['deleted'] !== '1') { # Abort is given post is not deleted
       return;
     }
     
@@ -130,7 +221,7 @@ class TopicRepository {
     $result = $stmt->fetchAll();
 
     # If the post has no children, we can delete it savely.
-    if ( intval($result[0]['child_count']) === 0 ) {
+    if (intval($result[0]['child_count']) === 0) {
       # Delete the post
       $sql = 'DELETE FROM posts WHERE topic_id = ? AND post_id = ? AND deleted = 1';
       $stmt = $pdo->prepare($sql);

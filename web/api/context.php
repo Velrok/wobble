@@ -14,6 +14,7 @@ require_once dirname(__FILE__).'/classes/ValidationService.class.php';
 require_once dirname(__FILE__).'/classes/TopicMessagesRepository.class.php';
 require_once dirname(__FILE__).'/classes/UserArchivedTopicRepository.class.php';
 require_once dirname(__FILE__).'/classes/InputSanitizer.class.php';
+require_once dirname(__FILE__).'/classes/TopicListService.class.php';
 
 
 
@@ -27,7 +28,7 @@ $PDO_CONTEXT_VAR = null;
 function ctx_getpdo() {
   global $PDO_CONTEXT_VAR;
 
-  if ( $PDO_CONTEXT_VAR == null ) {
+  if ($PDO_CONTEXT_VAR == null) {
     $pdo = new PDO(PDO_URL, PDO_USER, PDO_PASSWORD,
       array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''));
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); # Raise exceptions, so they get logged by Airbrake, or whatever

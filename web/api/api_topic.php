@@ -6,10 +6,7 @@
  **/
 
 function _topic_has_access($pdo, $topic_id) {
-  $stmt = $pdo->prepare('SELECT COUNT(*) cnt FROM topic_readers r WHERE r.user_id = ? AND r.topic_id = ?');
-  $stmt->execute(array(ctx_getuserid(), $topic_id));
-  $result = $stmt->fetchAll();
-  return $result[0]['cnt'] > 0;
+  return TopicRepository::isReader($topic_id, ctx_getuserid());
 }
 
 /**
@@ -42,59 +39,13 @@ function topic_get_details($params) {
   ValidationService::validate_not_empty($self_user_id);
   ValidationService::validate_not_empty($topic_id);
 
-  if (!_topic_has_access(ctx_getpdo(), $topic_id)) {
+  if (!TopicRepository::isReader($topic_id, $self_user_id)) {
     throw new Exception('Illegal Access!');
   }
 
   $pdo = ctx_getpdo();
 
-  $readers = TopicRepository::getReaders($topic_id);
-  $writers = TopicRepository::getWriters($topic_id);
-
-  $stmt = $pdo->prepare('SELECT p.post_id id, p.content, p.revision_no revision_no,
-      p.parent_post_id parent, p.last_touch timestamp, p.deleted deleted,
-      p.intended_post intended_post,
-      coalesce((select 0 from post_users_read
-            where topic_id = p.topic_id AND post_id = p.post_id AND user_id = ?), 1) unread
-     FROM posts p
-    WHERE p.topic_id = ?
-    ORDER BY created_at');
-  $stmt->execute(array($self_user_id, $topic_id));
-  $posts = $stmt->fetchAll();
-
-  $stmt = $pdo->prepare('SELECT e.user_id id FROM post_editors e WHERE topic_id = ? AND post_id = ?');
-  foreach($posts AS $i => $post) {
-    # Integer formatting for JSON-RPC result
-    $posts[$i]['timestamp'] = intval($posts[$i]['timestamp']);
-    $posts[$i]['revision_no'] = intval($posts[$i]['revision_no']);
-    $posts[$i]['deleted'] = intval($posts[$i]['deleted']);
-    $posts[$i]['unread'] = intval($posts[$i]['unread']);
-		$posts[$i]['intended_post'] = intval($posts[$i]['intended_post']);
-
-    $posts[$i]['locked'] = TopicRepository::getPostLockStatus($topic_id, $posts[$i]['id']);
-    if ($posts[$i]['locked']['user_id'] == $self_user_id) {
-      $posts[$i]['locked'] = NULL;
-    }
-
-    # Subobject
-    $posts[$i]['users'] = array();
-    $stmt->execute(array($topic_id, $post['id']));
-    foreach($stmt->fetchAll() AS $post_user) {
-      $posts[$i]['users'][] = intval($post_user['id']);
-    }
-  }
-
-  // Archived?
-  $archived = UserArchivedTopicRepository::isArchivedTopic($self_user_id, $topic_id);
-
-  return array (
-    'id' => $topic_id,
-    'readers' => $readers,
-    'messages' => TopicMessagesRepository::listMessages($topic_id, $self_user_id),
-    'writers' => $writers,
-    'posts' => $posts,
-    'archived' => $archived
-  );
+  return TopicRepository::getTopic($topic_id, $self_user_id);
 }
 
 /**
@@ -114,17 +65,24 @@ function topic_add_user($params) {
   ValidationService::validate_not_empty($user_id);
 
   $pdo = ctx_getpdo();
-  if ( _topic_has_access($pdo, $topic_id) ) {
+  if (TopicRepository::isReader($topic_id, $self_user_id)) {
     $topic_user = UserRepository::get($user_id);
+    $topic = TopicRepository::getTopic($topic_id, $self_user_id); # Load the whole topic
+
+    # Check timestamp. If first post is fresh, do not generate a join message
+    $freshTopic = (time() - $topic['created_at'] - 5 * 60 < 0);
 
     foreach(TopicRepository::getReaders($topic_id) as $reader) {
+      # Move topic back to inbox, if changed
+      UserArchivedTopicRepository::setArchived($reader['id'], $topic_id, 0);
+
       NotificationRepository::push($reader['id'], array(
         'type' => 'topic_changed',
         'topic_id' => $topic_id
       ));
 
       # No message for the acting user
-      if ($reader['id'] !== $self_user_id) {
+      if ($reader['id'] !== $self_user_id && !$freshTopic) {
         TopicMessagesRepository::createMessage(
           $topic_id,
           $reader['id'],
@@ -134,11 +92,7 @@ function topic_add_user($params) {
             'user_name' => $topic_user['name']
           )
         );
-
-        # Move topic back to inbox, if changed
-        UserArchivedTopicRepository::setArchived($reader['id'], $topic_id, 0);
       }
-
     }
 
     # Now add the user
@@ -181,17 +135,32 @@ function topic_remove_user($params) {
   ValidationService::validate_not_empty($user_id);
 
   $pdo = ctx_getpdo();
-  if ( _topic_has_access($pdo, $topic_id) ) {
+  if (TopicRepository::isReader($topic_id, $self_user_id)) {
     $topic_user = UserRepository::get($user_id);
+    $topic = TopicRepository::getTopic($topic_id, $self_user_id);
+
+    # Check timestamp. If first post is fresh, do not generate a join message
+    $freshTopic = (time() - $topic['created_at'] - 5 * 60 < 0);
+
+    # Delete afterwards. The other way around, the deleted user wouldn't get the notification
+    TopicRepository::removeReader($topic_id, $user_id);
+
+    NotificationRepository::push($user_id, array(
+      'type' => 'topic_changed',
+      'topic_id' => $topic_id
+    ));
 
     foreach(TopicRepository::getReaders($topic_id) as $reader) {
+      # Move topic back to inbox, if changed
+      UserArchivedTopicRepository::setArchived($reader['id'], $topic_id, 0);
+
       NotificationRepository::push($reader['id'], array(
         'type' => 'topic_changed',
         'topic_id' => $topic_id
       ));
 
       # Do not create a message for the acting nor the actual removed user
-      if ($self_user_id !== $reader['id'] && $reader['id'] !== $user_id) {
+      if ($self_user_id !== $reader['id'] && !$freshTopic) {
         TopicMessagesRepository::createMessage(
           $topic_id,
           $reader['id'],
@@ -202,12 +171,7 @@ function topic_remove_user($params) {
           )
         );
       }
-      # Move topic back to inbox, if changed
-      UserArchivedTopicRepository::setArchived($reader['id'], $topic_id, 0);
     }
-
-    # Delete afterwards. The other way around, the deleted user wouldn't get the notification
-    TopicRepository::removeReader($topic_id, $user_id);
 
     return TRUE;
   }
@@ -238,9 +202,7 @@ function post_create($params) {
   ValidationService::validate_not_empty($parent_post_id);
   ValidationService::validate_list($intended_reply, array('0', '1'));
 
-  $pdo = ctx_getpdo();
-
-  if ( _topic_has_access($pdo, $topic_id) ) {
+  if (TopicRepository::isReader($topic_id, $self_user_id)) {
     TopicRepository::createPost($topic_id, $post_id, $self_user_id, $parent_post_id, $intended_reply);
 
     TopicRepository::setPostLockStatus($topic_id, $post_id, 1, $self_user_id);
@@ -295,12 +257,12 @@ function post_edit($params) {
 
   $pdo = ctx_getpdo();
 
-  if ( _topic_has_access($pdo, $topic_id) ) {
+  if (TopicRepository::isReader($topic_id, $self_user_id)) {
     $stmt = $pdo->prepare('SELECT revision_no, content FROM posts WHERE topic_id = ? AND post_id = ?');
     $stmt->execute(array($topic_id, $post_id));
     $posts = $stmt->fetchAll();
 
-    if ( sizeof($posts) === 0 ) {
+    if (sizeof($posts) === 0) {
       # Post has already been deleted. Toooo laggy? No idea...
       return NULL;
     }
@@ -319,14 +281,13 @@ function post_edit($params) {
     # Sanitize input
     $content = InputSanitizer::sanitizePostContent($content);
 
-    $pdo->prepare('UPDATE posts SET content = ?, revision_no = revision_no + 1, last_touch = unix_timestamp() WHERE post_id = ? AND topic_id = ?')->execute(array($content, $post_id, $topic_id));
-    $pdo->prepare('REPLACE post_editors (topic_id, post_id, user_id) VALUES (?,?,?)')->execute(array($topic_id, $post_id, $self_user_id));
+    TopicRepository::updatePost($topic_id, $post_id, $revision, $content, $self_user_id);
 
     TopicRepository::setPostLockStatus(
       $topic_id, $post_id, 0, $self_user_id # Clear the lock
     );
 
-    if ( $posts[0]['content'] !== $content) {
+    if ($posts[0]['content'] !== $content) {
       # Mark only as unread, if there were real changes
       TopicRepository::setPostReadStatus(
         $self_user_id, $topic_id, $post_id, 1 # Mark post as read for requesting user
@@ -358,7 +319,7 @@ function post_edit($params) {
 
     return array (
       'revision_no' => ($revision + 1)
-    );
+   );
   }
   else {
     throw new Exception('Illegal Access!');
@@ -387,17 +348,12 @@ function post_delete($params) {
 
   $pdo = ctx_getpdo();
 
-  if ( _topic_has_access($pdo, $topic_id) ) {
-    $stmt = $pdo->prepare('DELETE FROM post_editors WHERE topic_id = ? AND post_id = ?');
-    $stmt->execute(array($topic_id, $post_id));
-
-    $pdo->prepare('UPDATE posts SET deleted = 1, content = NULL WHERE topic_id = ? AND post_id = ?')->execute(array($topic_id, $post_id));
-
-    $pdo->prepare('DELETE FROM post_users_read WHERE topic_id = ? AND post_id = ?')->execute(array($topic_id, $post_id));
+  if (TopicRepository::isReader($topic_id, $self_user_id)) {
+    TopicRepository::deletePost($topic_id, $post_id);
 
     TopicRepository::setPostLockStatus($topic_id, $post_id, 0, $self_user_id);
 
-    TopicRepository::deletePostsIfNoChilds($topic_id, $post_id); # Traverses upwards and deletes all posts, if no child exist
+    #TopicRepository::deletePostsIfNoChilds($topic_id, $post_id); # Traverses upwards and deletes all posts, if no child exist
 
     foreach(TopicRepository::getReaders($topic_id) as $user) {
       NotificationRepository::push($user['id'], array(
@@ -424,19 +380,19 @@ function post_delete($params) {
  * result = true
  */
 function post_change_read($params) {
-  $user_id = ctx_getuserid();
+  $self_user_id = ctx_getuserid();
   $topic_id = $params['topic_id'];
   $post_id = $params['post_id'];
   $read = $params['read'];
   $pdo = ctx_getpdo();
 
-  ValidationService::validate_not_empty($user_id);
+  ValidationService::validate_not_empty($self_user_id);
   ValidationService::validate_not_empty($topic_id);
   ValidationService::validate_not_empty($post_id);
   ValidationService::validate_not_empty($read);
 
-  if ( _topic_has_access($pdo, $topic_id) ) {
-    TopicRepository::setPostReadStatus($user_id, $topic_id, $post_id, $read);
+  if (TopicRepository::isReader($topic_id, $self_user_id)) {
+    TopicRepository::setPostReadStatus($self_user_id, $topic_id, $post_id, $read);
   } else {
     throw new Exception('Illegal Access!');
   }
@@ -498,7 +454,7 @@ function topic_remove_message($params) {
       ValidationService::validate_not_empty($topic_id);
       ValidationService::validate_not_empty($message_id);
 
-      if (_topic_has_access($pdo, $topic_id)) {
+      if (TopicRepository::isReader($topic_id, $user_id)) {
 
           TopicMessagesRepository::deleteMessage($topic_id, $user_id, $message_id);
 

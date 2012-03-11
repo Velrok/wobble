@@ -27,12 +27,14 @@
   // External Libraries
   if (isDev) {
     files.push(
+      'js/ext/tinycon.js',
       'js/ext/underscore.js',
       'js/ext/jquery-1.7.1.js',
       'js/ext/mustache.js'
     );
   } else {
     files.push(
+      'js/ext/tinycon.min.js',
       'js/ext/underscore-min.js',
       'js/ext/jquery.min.js',
       'js/ext/mustache.min.js'
@@ -56,8 +58,10 @@
     'js/modules/ContactsChooserPresenter.js',
     'js/modules/ContactsDetailPresenter.js',
     'js/modules/TopicPresenter.js',
+    'js/modules/TopicListModel.js',
     'js/modules/TopicListPresenter.js',
     'js/modules/UserProfilePresenter.js',
+    'js/modules/WindowUpdater.js',
 
     // Views
     'js/views/jQueryTopicListView.js',
