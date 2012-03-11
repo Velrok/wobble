@@ -29,6 +29,11 @@ body {
 	float: left;
 }
 
+#app_name {
+	float: left;
+	margin-left: 5px;
+}
+
 /*+++++++++++ Top Menu +++++++++++*/
 #top_menu {
 	float:right;
@@ -41,19 +46,20 @@ body {
 	float: left;
 	margin: -1px 5px;
 	position: relative;
-	width:7em;
-	position: relative;
-	height: 100%;
+	width:6em;
+	height: 20px;
 }
 
 #top_menu li img
 {
 	float: left;
+	margin-right:10px;
+	height: 100%;
 }
 
 #top_menu li div
 {
-	margin: 9px 1.5em;
+	margin: 0.3em 1.2em;
 }
 
 
@@ -73,13 +79,15 @@ body {
 
 /*+++++++++++ Topics List +++++++++++*/
 #topics_list {
-	
+	width: 270px;
+	padding: 5px;
 }
 
 /*+++++++++++ Tabs +++++++++++*/
 #topics_list .tab {
+	margin-bottom: -1px;
 	margin-right:0.5em;
-	padding: 0.5em 1em;
+	padding: 0.2em 1em;
 	border-width: 1px;
 	border-style: solid;
 	float: left;
@@ -89,43 +97,42 @@ body {
 	border-bottom-style: none;
 }
 
-
 /*+++++++++++ Topics List Line +++++++++++*/
-.content_view {
+.tab_content {
 	height: 100%;
 	margin-top: -30px;
 	clear: both;
 	list-style-type: none;
 }
 
-.content_view ul {
+.tab_content ul {
 	list-style-type: none;
 }
 
-.content_view li {
+.tab_content li {
 	border-width: 1px;
 	border-bottom-style: solid;
 	clear: right;
 	min-height: 36px;
-	padding:2px;
+	padding: 3px 5px;
 }
 
-.content_view .topic .creator {
+.tab_content .topic .creator {
 	float: left;
 	margin: 2px;
 }
 
 /*+++++++++++ Topics List Line Metadata +++++++++++*/
-.content_view .topic > .metadata {
+.tab_content .topic > .metadata {
 	float: right;
 }
 
-.content_view .topic > .metadata .unread_count {
+.tab_content .topic > .metadata .unread_count {
 	padding: 0.1em 0.5em;
 	border-radius: 1em;
 }
 
-.content_view .topic > .metadata .time {
+.tab_content .topic > .metadata .time {
 	float: right;
 	text-align: right;
 }
@@ -134,11 +141,18 @@ body {
 /*+++++++++++ Topic View +++++++++++*/
 #topic_view {
 	width: 380px;
+	height: 30px;
 }
 
 #topic_view .topic {
 	float: left;
 	width: 340px;
+	height: 30px;
+}
+
+#topic_view .topic .header,
+#topic_view .users .creator {
+	height: 41px;
 }
 
 #topic_view .topic .body {
@@ -149,6 +163,11 @@ body {
 #topic_view .users {
 	float: right;
 	width:40px;
+}
+
+#topic_view .users .participants {
+	overflow: scroll;
+	height:100%;
 }
 
 /*center userpix*/
@@ -164,20 +183,16 @@ body {
 	width: 32px;
 }
 
-/* topic headerer */
-#topic_view .topic .header div {
-	font-size: 2em;
+
+/*+++++++++++ Dynamic Stuff +++++++++++*/
+#dynamic_third {
+	width: 280px;
 	padding: 5px;
 }
 
-#topic_view .topic .header,
-#topic_view .users .creator {
-	height: 41px;
+#dynamic_third .profile {
+	margin-bottom: 20px;
 }
-
-
-
-
 
 
 

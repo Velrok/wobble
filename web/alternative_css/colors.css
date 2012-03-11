@@ -1,38 +1,77 @@
-/*+++++++ Blue Text +++++++*/
-.app_name 
+/*+++++++ Gray Background +++++++*/
+#page 
 {
-	color: #2A78F3;
+	background-color: #F4F4F4;
+}
+
+/*+++++++ Blue Text +++++++*/
+#app_name,
+.tabs .inbox,
+.tabs .archive
+{
+	color: #328EF8;
 }
 
 /*+++++++ Blue on White +++++++*/
 #topic_view .topic .header,
 #topic_view .users .creator,
 .tabs .inbox,
-.content_view .new_wobble
+.tab_content .new_wobble,
+#dynamic_third .header
 {
-	background-color: #2A78F3;
+	background-color: #2C77E2;
+	background: -webkit-gradient(linear, left top, left bottom, from(#4EAFF9), to(#328EF8));
 	color: white;
 }
 
+/*+++++++ Black on Gray Radient +++++++*/
+#top_menu li
+{
+	background-color: #CECECE;
+	background: -webkit-gradient(linear, left top, left bottom, from(#BFC0BF), to(#DADADA));
+	color: black;
+}
+
+/*+++++++ Black on Gray Radient Inverted +++++++*/
+{
+	background-color: #CECECE;
+	background: -webkit-gradient(linear, left bottom, left top, from(#BFC0BF), to(#DADADA));
+	color: black;
+}
+
 /*+++++++ Green Background +++++++*/
-.content_view .topic > .metadata .unread_count 
+.tab_content .topic > .metadata .unread_count 
 {
 	background-color: #98CF35;
 }
 
-/*+++++++ Borders +++++++*/
-.content_view li,
+/*+++++++ Round Top Corners +++++++*/
+#topics_list .topic .creator,
+#topic_view .users img,
+.tab,
+#topic_view .topic
+{
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+
+/*+++++++ Round Bottom Corners +++++++*/
+#top_menu li,
+#top_menu li img,
+#topics_list .topic .creator,
+#topic_view .users img
+{
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+
+/*+++++++ Gray Border +++++++*/
+#topics_list .tab,
+#topics_list .topic,
 #topic_view .users .participants > img,
 #topic_view .users .creator > img
 {
-	border: 1px solid #AAA;
-}
-
-
-/*+++++++ Black Borders +++++++*/
-#topics_list .tabs > span
-{
-	border-color: black;
+	border-color: #AAA;
 }
 
 /*+++++++ Light Shadow +++++++*/
@@ -50,8 +89,16 @@
 /*+++++++ Shadows +++++++*/
 #page,
 #top_menu li,
-/*#topics_list,*/
-#topic_view
+#topics_list .tab_content,
+#topic_view,
+#dynamic_third div
 {
-	box-shadow: 0px 0px 10px #AAA;
+	box-shadow: 0px 0px 5px #AAA;
 }
+
+/*+++++++ Selection Glow +++++++*/
+#top_menu li:hover
+{
+	box-shadow: 0px 0px 7px 2px #2C77E2;
+}
+
