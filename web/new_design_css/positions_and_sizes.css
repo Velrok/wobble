@@ -5,9 +5,7 @@ body {
 
 #page {
 	min-width:700px;
-	max-width:1024px;
 	margin: 0px auto;
-	height: 770px;
 	padding: 0px 10px;
 }
 
@@ -24,6 +22,10 @@ body {
 /*+++++++++++ Fixing Stuff +++++++++++*/
 .anti_collabs {
 	clear: both;
+	visibility: hidden;
+}
+
+.hide {
 	visibility: hidden;
 }
 
@@ -76,21 +78,21 @@ body {
 /*+++++++++++ Widgets +++++++++++*/
 #widgets {
 	clear: both;
-	height:710px
+	height:80%;
 }
 
 #widgets > div {
 	height: 100%; /*all widgets use the full height*/
 	float:left; /*all float to the left*/
-	overflow: scroll;
-	margin-right: 20px;
+	margin-right: 5px;
 }
 
 
 /*+++++++++++ Topics List +++++++++++*/
 #topics_list {
-	width: 280px;
+	width: 200px;
 	padding: 5px;
+	overflow-x: hidden;
 }
 
 /*+++++++++++ Tabs +++++++++++*/
@@ -151,7 +153,8 @@ body {
 /*+++++++++++ Topic View +++++++++++*/
 #topic_view {
 	width: 395px;
-	height: 30px;
+	/*height: 30px;*/
+	margin-top:22px;
 }
 
 #topic_view .topic {
@@ -172,11 +175,13 @@ body {
 
 #topic_view .users {
 	float: right;
+	height:100%;
 	width:65px;
+	overflow: hidden;
 }
 
 #topic_view .users .participants {
-	overflow: scroll;
+	overflow: hidden;
 	height:100%;
 }
 
