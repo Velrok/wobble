@@ -11,6 +11,16 @@ body {
 	padding: 0px 10px;
 }
 
+/*+++++++++++ big button +++++++++++*/
+#new_wobble_button,
+#add_participant_button {
+	width: 30px;
+	height: 30px;
+	font-size: 2em;
+	text-decoration: none;
+	color: black;
+}
+
 /*+++++++++++ Fixing Stuff +++++++++++*/
 .anti_collabs {
 	clear: both;
@@ -79,7 +89,7 @@ body {
 
 /*+++++++++++ Topics List +++++++++++*/
 #topics_list {
-	width: 270px;
+	width: 280px;
 	padding: 5px;
 }
 
@@ -140,7 +150,7 @@ body {
 
 /*+++++++++++ Topic View +++++++++++*/
 #topic_view {
-	width: 380px;
+	width: 395px;
 	height: 30px;
 }
 
@@ -162,7 +172,7 @@ body {
 
 #topic_view .users {
 	float: right;
-	width:40px;
+	width:65px;
 }
 
 #topic_view .users .participants {

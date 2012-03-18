@@ -16,7 +16,6 @@
 #topic_view .topic .header,
 #topic_view .users .creator,
 .tabs .inbox,
-.tab_content .new_wobble,
 #dynamic_third .header
 {
 	background-color: #2C77E2;
@@ -45,6 +44,14 @@
 	background-color: #98CF35;
 }
 
+/*+++++++ Blue Button +++++++*/
+#new_wobble_button,
+#add_participant_button {
+	color: white;
+	background-color: blue;
+}
+
+
 /*+++++++ Round Top Corners +++++++*/
 #topics_list .topic .creator,
 #topic_view .users img,
@@ -67,7 +74,7 @@
 
 /*+++++++ Gray Border +++++++*/
 #topics_list .tab,
-#topics_list .topic,
+#topics_list li,
 #topic_view .users .participants > img,
 #topic_view .users .creator > img
 {

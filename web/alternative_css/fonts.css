@@ -30,11 +30,6 @@ body
 
 
 /*+++++++++++ List Line +++++++++++*/
-#topics_list .tab_content .new_wobble
-{
-	font-size:1.5em;
-}
-
 .tab_content .topic .preview .title 
 {
 	font-weight: bold;
