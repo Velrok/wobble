@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../web/api/context.php';
+require_once dirname(__FILE__) . '/../../WobbleApi/Autoload.php';
 
 class InputSanitizerTest extends PHPUnit_Framework_TestCase {
   function testSanitizeEmail() {
@@ -9,8 +9,11 @@ class InputSanitizerTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('user@example.com', InputSanitizer::sanitizeEmail("user@example.com\n"));
   }
   
-  public function testSanitizeLinks() {
-    $this->assertEquals('<a target="_new" href="http://example.com">Click here</a>', 
-                        InputSanitizer::sanitizeLinks('<a href="http://example.com">Click here</a>'));
+  public function testSanitizePostContent() {
+    # Currently sanitizePostContent() only cleans the links via sanitizeLinks()
+    $input = ' asd <a href="http://example.com">Click me</a>';
+    $expected = 'asd <a href="http://example.com">Click me</a>';
+    
+    $this->assertEquals($expected, InputSanitizer::sanitizePostContent($input));
   }
 }

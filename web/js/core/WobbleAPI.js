@@ -36,13 +36,12 @@ WobbleAPI.prototype.destroy = function() {};
  * @see this.rpc
  */
 WobbleAPI.prototype.doRPC = function(name, params, callback) {
+  if(typeof(params) == "function") {
+      callback = params
+      params = undefined
+  }
   if(this.apikey.get()) {
-    if(typeof(params) == "function") {
-      callback = params;
-      params = {
-        'apikey': this.apikey.get()
-      };
-    } else if(params == undefined) {
+    if(params == undefined) {
       params = {
         'apikey': this.apikey.get()
       };
@@ -138,6 +137,10 @@ WobbleAPI.prototype.topics_create = function(id, callback) {
 
 WobbleAPI.prototype.load_topic_details = function(topicId, callback) {
   this.doRPC('topic_get_details', {id: topicId}, callback);
+};
+
+WobbleAPI.prototype.topics_search = function (search_filter, callback) {
+  this.doRPC('topics_search', {'filter': search_filter}, callback);
 };
 
 WobbleAPI.prototype.list_topics = function (show_archived, callback) {
