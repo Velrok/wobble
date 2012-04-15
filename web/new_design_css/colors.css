@@ -26,7 +26,9 @@
 #topic_view .topic .header,
 #topic_view .users .creator,
 .tabs .inbox,
-#dynamic_third .header
+#dynamic_third .header,
+#new_wobble_button,
+#add_participant_button
 {
 	background-color: #2C77E2;
 	background: -webkit-gradient(linear, left top, left bottom, from(#4EAFF9), to(#328EF8));
@@ -55,10 +57,10 @@
 }
 
 /*+++++++ Blue Button +++++++*/
-#new_wobble_button,
-#add_participant_button {
+#new_wobble_button a,
+#add_participant_button a
+{
 	color: white;
-	background-color: blue;
 }
 
 
@@ -66,20 +68,24 @@
 #topics_list .topic .creator,
 #topic_view .users img,
 .tab,
-#topic_view .topic
+#topic_view .topic,
+#new_wobble_button,
+#add_participant_button
 {
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
 }
 
 /*+++++++ Round Bottom Corners +++++++*/
 #top_menu li,
 #top_menu li img,
 #topics_list .topic .creator,
-#topic_view .users img
+#topic_view .users img,
+#new_wobble_button,
+#add_participant_button
 {
-	border-bottom-left-radius: 3px;
-	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
 }
 
 /*+++++++ Gray Border +++++++*/
