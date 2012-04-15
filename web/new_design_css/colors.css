@@ -12,6 +12,16 @@
 	color: #328EF8;
 }
 
+/*+++++++ Black text on white background +++++++*/
+#topics_list .tab_content,
+#topic_view .topic .body,
+#dynamic_third .profile .content,
+#dynamic_third .contacts .body
+{
+	color: black;
+	background-color: white;
+}
+
 /*+++++++ Blue on White +++++++*/
 #topic_view .topic .header,
 #topic_view .users .creator,
