@@ -203,11 +203,42 @@ body {
 #dynamic_third {
 	width: 280px;
 	padding: 5px;
+	margin-top:17px;
 }
 
 #dynamic_third .profile {
 	margin-bottom: 20px;
 }
 
+#dynamic_third .profile .content {
+	padding: 5px;
+}
 
+#dynamic_third .profile .content img {
+	float: right;
+}
 
+#dynamic_third .profile .content hr {
+	margin: 13px 0px 2px 0px;
+}
+
+#dynamic_third .contacts .body {
+	list-style: none;
+	overflow: scroll;
+}
+
+#dynamic_third .contacts .body img{
+	width:24px;
+
+}
+
+/*#dynamic_third .contacts .body li{
+	vertical-align: top;
+}*/
+
+#dynamic_third .contacts .body .contact_name {
+	vertical-align: top;
+	display: inline-block;
+	margin: 5px;
+	font-size: 1.1em;
+}
